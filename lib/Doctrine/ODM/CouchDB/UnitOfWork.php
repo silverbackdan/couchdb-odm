@@ -1005,8 +1005,6 @@ class UnitOfWork
             $this->evm->dispatchEvent(Event::onFlush, new Event\OnFlushEventArgs($this));
         }
 
-        $config = $this->dm->getConfiguration();
-
         $bulkUpdater = $this->dm->getCouchDBClient()->createBulkUpdater();
 
         foreach ($this->scheduledRemovals AS $oid => $document) {
