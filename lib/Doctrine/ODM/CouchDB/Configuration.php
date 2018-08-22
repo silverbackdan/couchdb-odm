@@ -2,6 +2,8 @@
 
 namespace Doctrine\ODM\CouchDB;
 
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
 
@@ -9,6 +11,7 @@ use Doctrine\CouchDB\HTTP\Client;
 use Doctrine\CouchDB\HTTP\SocketClient;
 use Doctrine\CouchDB\HTTP\LoggingClient;
 
+use Doctrine\ODM\CouchDB\Mapping\Driver\AnnotationDriver;
 use Doctrine\ODM\CouchDB\Mapping\MetadataResolver\MetadataResolver;
 use Doctrine\ODM\CouchDB\Mapping\MetadataResolver\DoctrineResolver;
 use Doctrine\ODM\CouchDB\Migrations\DocumentMigration;
@@ -143,14 +146,13 @@ class Configuration
      * Add a new default annotation driver with a correctly configured annotation reader.
      *
      * @param array $paths
-     * @return Mapping\Driver\AnnotationDriver
+     * @return AnnotationDriver
+     * @throws \Doctrine\Common\Annotations\AnnotationException
      */
     public function newDefaultAnnotationDriver($paths = array())
     {
-        $reader = new \Doctrine\Common\Annotations\SimpleAnnotationReader();
-        $reader->addNamespace('Doctrine\ODM\CouchDB\Mapping\Annotations');
-
-        return new \Doctrine\ODM\CouchDB\Mapping\Driver\AnnotationDriver($reader, (array) $paths);
+        $reader = new AnnotationReader();
+        return new AnnotationDriver($reader, $paths);
     }
 
     public function setMetadataResolverImpl(MetadataResolver $resolver)

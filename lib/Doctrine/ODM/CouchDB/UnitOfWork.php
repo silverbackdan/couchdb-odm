@@ -153,7 +153,6 @@ class UnitOfWork
         if (!$this->metadataResolver->canMapDocument($data)) {
             throw new \InvalidArgumentException("Missing or mismatching metadata description in the Document, cannot hydrate!");
         }
-
         $type = $this->metadataResolver->getDocumentType($data);
         $class = $this->dm->getClassMetadata($type);
 
